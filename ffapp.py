@@ -15,7 +15,7 @@ def capitalize_name(name):
 # Create a Streamlit app
 def main():
     st.title("2023 Full PPR Fantasy Football Ranking Comparison App")
-    st.image("images/gsaL.png", use_column_width=True)
+    # st.image("images/gsaL.png", use_column_width=True)
     
     # User input without suggestions
     name = st.text_input("Enter a name:", key="name_input")
