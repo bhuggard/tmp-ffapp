@@ -1,12 +1,10 @@
 import streamlit as st
 import pandas as pd
 import os
-from fuzzywuzzy import process
 
 # Load your CSV files into DataFrames
 csv_files = ["espn_clean.csv", "fantasypros_clean.csv", "fantraxhq_clean.csv", "pff_clean.csv", "rotoballer_clean.csv"]
-data_folder = 'data'
-dataframes = [pd.read_csv(os.path.join(data_folder, file)) for file in csv_files]
+dataframes = [pd.read_csv(file) for file in csv_files]
 
 # Capitalize the first and last name
 def capitalize_name(name):
@@ -45,11 +43,11 @@ def display_rankings(name):
         st.subheader(f"Source: {source_name}")
         
         if "Player" in df.columns:
-            closest_match = process.extractOne(name.lower(), df["Player"].str.lower())
+            matching_rows = df[df["Player"].str.lower() == name.lower()]
             
-            if closest_match[1] >= 80:  # Minimum similarity score for a match
-                row = df[df["Player"].str.lower() == closest_match[0]].iloc[0]
-                st.write(f"Closest Match: {row['Player']}")
+            if not matching_rows.empty:
+                row = matching_rows.iloc[0]
+                st.write(f"Exact Match: {row['Player']}")
                 st.write(f"Overall Rank: {row['Overall Rank']}")
                 st.write(f"Position Rank: {row['Position Rank']}")
             else:
